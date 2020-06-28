@@ -19,15 +19,16 @@ ambiente.
 ```
 Imagem é como um encapsulamento já com alguns papeis já definidos.
 Seria como se fosse um CD de instalação de linux ou windows.
->No repositorio de imagens do docker [repositorio https://hub.docker.com/](https://hub.docker.com/)
-temos diversas imagens para diversos tipos de trabalhos como nginx/apache para servir páginas bancos de dados
-como mysql, postgreSQL, mongoDB, redis linguagens de programação como Node, php, e muitos outros.
+No repositorio de imagens do docker <a href="https://hub.docker.com/">https://hub.docker.com/</a>
+temos diversas imagens para diversos tipos de trabalhos como 
+nginx/apache para servir páginas bancos de dados como mysql, postgreSQL, 
+mongoDB, redis linguagens de programação como Node, php, e muitos outros.
 ```
 
 ## O que é Container
 ```
-Container é como se fosse uma maquina que está com uma imagem instalada para poder acessar e executar
-suas interações
+Container é como se fosse uma maquina que está com uma imagem instalada para 
+poder acessar e executar suas interações
 ```
 
 ## comandos docker
@@ -77,7 +78,7 @@ Um arquivo que posso fazer para ele criar as minhas imagens personalizadas
 ```
 FROM node:14-alpine   (escolhi usar a imagem do node versão 14 com sistema operacional alpine)
 
-WORKDIR /src  (todos os comandos que executar a partir de agora rodarão no diretorio /src dentro do container)
+WORKDIR /src  (Definindo o diretorio padrão /src dentro do container)
 
 ADD package.json /src  (adiciona o arquivo package.json no diretorio src)
 
@@ -90,11 +91,14 @@ RUN npm run build
 CMD npm start
 ```
 
+detalhe o comando run é executado uma vez, ele cria o container e executa.
+Pra executar outras vezes o container criado utilize exec
+
 - docker build -t imagemapp  .  
 vai criar uma imagem com o conteudo do dockerfile acima
 
-docker run --name app --link mongodb -e MONGO_URL=mongodb -e PORT=4000 -p 4000:4000 app
-
+- docker run --name app --link mongodb -e MONGO_URL=mongodb -e PORT=4000 -p 4000:4000 app
+Executa o volume
 
 criando um volume
 docker volume create --name nodemodules
