@@ -69,9 +69,15 @@ docker run --name mongodb -p 27017:27017  -d mongo:4
 docker exec -it mongodb mongo   
 executa o mongo dentro do container mongodb
 
-- .dockerignore
-um arquivo que posso colocar o que quero que seja ignorado no docker
 
+## .dockerignore
+Um arquivo que adiciono o que não quero que seja copiado para a imagem.
+
+```
+Dockerfile
+node_modules
+tmp
+```
 
 ## Dockerfile
 Um arquivo que posso fazer para ele criar as minhas imagens personalizadas
