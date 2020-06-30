@@ -76,7 +76,7 @@ um arquivo que posso colocar o que quero que seja ignorado no docker
 ## Dockerfile
 Um arquivo que posso fazer para ele criar as minhas imagens personalizadas
 ```
-FROM node:14-alpine   (escolhi usar a imagem do node versão 14 com sistema operacional alpine)
+FROM node   (escolhi usar a imagem do node )
 
 WORKDIR /src  (Definindo o diretorio padrão /src dentro do container)
 
@@ -84,9 +84,7 @@ ADD package.json /src  (adiciona o arquivo package.json no diretorio src)
 
 RUN npm i --silent  (instala os pacotes necessarios via npm )
 
-ADD . /src
-
-RUN npm run build
+COPY . /src
 
 CMD npm start
 ```
@@ -133,7 +131,6 @@ services:
     depends_on:
       - mongodb
 
-
 volumes:
   nodemodules: {}
 
@@ -146,6 +143,82 @@ para de rodar todos os containers
 
 - docker-compose down -v   
 apaga os containers e o volume (-v)
+
+
+### docker-compose mais elaborado
+```
+version: '3.7'
+
+services:
+  terminal:
+    image: gravino
+    volumes:
+      - ./data:/srv/data
+      - ./teste:/srv/teste
+    environment: 
+      TZ: 'america/sao_paulo'
+    stdin_open: true   #equivale ao -i
+    tty: true #equivale ao -t 
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.1
+  
+  alfa:
+    image: gravino
+    volumes:
+      - ./data:/srv/data
+    command: ./start1.sh
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.2
+
+  bravo:
+    image: gravino
+    volumes:
+      - ./data:/srv/data
+    command: ./startnode2.sh
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.3
+
+  database:
+    image: library/postgres
+    volumes:
+      - ./admin_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: senhapadrao123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: luandadb
+    networks:
+      movbank_net:
+        ipv4_address: 10.1.1.4
+
+  backend:
+    image: gravino
+    volumes:
+      - ./admin/backend:/srv/admin/backend
+    ports: 
+      - "1337:1337"
+    environment: 
+      TZ: 'America/Sao_Paulo'
+    working_dir: /novo/diretorio
+    stdin_open: true   #equivale ao -i
+    tty: true #equivale ao -t 
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.10
+
+networks:
+  luanda_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.1.0/16
+```
+
+
 
 
 --- lembrar de falar do ctop
