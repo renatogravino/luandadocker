@@ -138,7 +138,7 @@ services:
       - mongodb
 
 volumes:
-  nodemodules: {}
+  nodemodules: 
 
 ```
 - docker-compose up --build -d   
@@ -192,7 +192,7 @@ services:
     volumes:
       - ./admin_postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: senhapadrao123456
       POSTGRES_USER: postgres
@@ -206,7 +206,7 @@ services:
     volumes:
       - ./admin/backend:/srv/admin/backend
     ports: 
-      - "1337:1337"
+      - 1337:1337
     environment: 
       TZ: 'America/Sao_Paulo'
     working_dir: /novo/diretorio
