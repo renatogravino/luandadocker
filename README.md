@@ -33,29 +33,49 @@ poder acessar e executar suas interações
 
 ## comandos docker
 
-- docker image ls  
 lista imagens
+>docker image ls  
 
-- docker image pull <imagem>  
-baixa imagem
-
-- docker image rm <imagem>  
 apaga imagem
+>docker image rm <imagem>  
 
-- docker container ls  
 lista containers ativos
+>docker container ls  
 
-- docker container ls -a   
-lista todos os containers
+lista todos os containers  (ativos/inativos)
+>docker container ls -a   
 
-- docker ps
 lista os containers (como processo)
+>docker ps
 
-- docker ps -a 
-lista todos os containers (como processo)
+lista todos os containers (como processo)  
+>docker ps -a 
 
-- docker stop   
-para os containers
+
+Iniciar container   
+>docker start containerteste  
+
+Parar container   
+>docker stop containerteste  
+
+Pausar container   
+> docker pause containerteste  
+
+Tirar pausa do container   
+>docker unpause containerteste  
+
+Consumo do container (mem,cpu etc)  
+>docker stats containerteste
+
+Logs do container  
+>docker logs containerteste
+
+Baixa uma imagem para posterior uso
+>docker pull containerteste
+
+control+p+q
+sai de um container e mantem o mesmo em execução
+
 
 - docker run --name primeiroteste -d ubuntu  
 roda o container com nome primeiroteste usando a imagem ubuntu  (-d para rodar em segundo plano)
@@ -92,7 +112,7 @@ RUN npm i --silent  (instala os pacotes necessarios via npm )
 
 COPY . /src
 
-CMD npm start
+CMD ["npm", "start"]
 ```
 
 detalhe o comando run é executado uma vez, ele cria o container e executa.
@@ -165,27 +185,18 @@ services:
       TZ: 'america/sao_paulo'
     stdin_open: true   #equivale ao -i
     tty: true #equivale ao -t 
-    networks:
-      luanda_net:
-        ipv4_address: 10.1.1.1
   
   alfa:
     image: gravino
     volumes:
       - ./data:/srv/data
     command: ./start1.sh
-    networks:
-      luanda_net:
-        ipv4_address: 10.1.1.2
 
   bravo:
     image: gravino
     volumes:
       - ./data:/srv/data
     command: ./startnode2.sh
-    networks:
-      luanda_net:
-        ipv4_address: 10.1.1.3
 
   database:
     image: library/postgres
@@ -197,9 +208,6 @@ services:
       POSTGRES_PASSWORD: senhapadrao123456
       POSTGRES_USER: postgres
       POSTGRES_DB: luandadb
-    networks:
-      movbank_net:
-        ipv4_address: 10.1.1.4
 
   backend:
     image: gravino
@@ -212,16 +220,7 @@ services:
     working_dir: /novo/diretorio
     stdin_open: true   #equivale ao -i
     tty: true #equivale ao -t 
-    networks:
-      luanda_net:
-        ipv4_address: 10.1.1.10
 
-networks:
-  luanda_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.1.1.0/16
 ```
 
 

@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  
+  mongo:
+    image: mongo:4.2
+    # volumes:
+    #   - ./mongo_data:/data/db
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.1
+
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    environment: 
+      MONGO_URL: mongo
+    volumes:
+      - ./fonte:/srv/node
+      - nodemodules:/srv/node/node_modules
+    links:
+      - mongo
+    depends_on: 
+      - mongo
+    networks:
+      luanda_net:
+        ipv4_address: 10.1.1.2
+
+volumes:
+  nodemodules:
+
+
+networks:
+  luanda_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.1.0/16
