@@ -71,7 +71,7 @@ Logs do container
 >docker logs containerteste
 
 Baixa uma imagem para posterior uso
->docker pull containerteste
+>docker pull imagemname
 
 control+p+q
 sai de um container e mantem o mesmo em execução
